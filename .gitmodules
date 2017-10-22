@@ -1,0 +1,3 @@
+[submodule "provision/roles/ansible-prometheus"]
+	path = provision/roles/ansible-prometheus
+	url = https://github.com/William-Yeh/ansible-prometheus.git
