@@ -1,0 +1,16 @@
+---
+snmp_exporter_user:  prometheus
+snmp_exporter_group: prometheus
+
+snmp_exporter_version:       0.7.0
+snmp_exporter_tarball_url:   "https://github.com/prometheus/snmp_exporter/releases/download/v{{ snmp_exporter_version }}/snmp_exporter-{{ snmp_exporter_version }}.linux-amd64.tar.gz"
+
+snmp_exporter_install_path:  /opt/snmp_exporter
+snmp_exporter_subdir:        "{{ snmp_exporter_install_path }}/snmp_exporter-{{ snmp_exporter_version }}.linux-amd64"
+
+snmp_exporter_config_path:   /etc/snmp_exporter
+
+snmp_exporter_download_path: /tmp
+snmp_exporter_workdir:       "{{ snmp_exporter_download_path }}/snmp_exporter_workdir"
+
+snmp_exporter_clean_tarball: true

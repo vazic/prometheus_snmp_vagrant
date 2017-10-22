@@ -1,0 +1,47 @@
+---
+# file: tasks/main.yml
+
+#TODO: fix selinus rules to allow Prometheus and SNMP_exporter to communicate
+- name: Put SELinux in permissive mode
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: create dir structure for snmp_exporter
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ snmp_exporter_user }}"
+    group: "{{ snmp_exporter_group }}"
+    mode: "u=rwx,g=rx,o="
+  with_items:
+    - "{{ snmp_exporter_install_path }}"
+    - "{{ snmp_exporter_config_path }}"
+
+- name: download and untar snmp_exporter tarball
+  unarchive:
+      src: "{{ snmp_exporter_tarball_url }}"
+      dest: "{{ snmp_exporter_install_path }}"
+      copy: no
+
+- name: copy snmp.yml config
+  copy: src="../files/snmp.yml"  dest=/etc/snmp_exporter/snmp.yml
+
+- name: snmp_exporter | set permissions, owner and group
+  file:
+    path: "{{ snmp_exporter_install_path }}"
+    state: directory
+    owner: "{{ snmp_exporter_user }}"
+    group: "{{ snmp_exporter_group }}"
+    mode: "go-w"
+    recurse: yes
+
+- name: create snmp_exporter unit file
+  template: src=snmp_exporter.service.j2 dest=/lib/systemd/system/snmp_exporter.service mode=644
+  notify:
+    - restart snmp_exporter
+
+- name: start snmp_exporter
+  service: name=snmp_exporter.service state=started enabled=yes
+
+

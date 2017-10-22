@@ -1,0 +1,33 @@
+global:
+  scrape_interval:     2s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 6s # By default, scrape targets every 15 seconds.
+
+  # The labels to add to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'master'
+
+# A list of scrape configurations.
+scrape_configs:
+
+  - job_name: 'prometheus'
+    scrape_interval: 10s
+    scrape_timeout:  10s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'snmp'
+    static_configs:
+      - targets:
+        - 192.168.111.20  # SNMP device.
+    metrics_path: /snmp
+    params:
+      module: [arista_sw,if_mib,if_mib_ifalias,if_mib_ifdescr,if_mib_ifname]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116  # SNMP exporter.
+

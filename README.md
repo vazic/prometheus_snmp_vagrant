@@ -25,3 +25,5 @@ This Vagrant environment contains 2 boxes:
 If environment boot was completed without any errors, you should be example to access Prometheus GUI on port 9090 of your host machine. Try to open `http://localhost:9090/graph` in your browser.
 
 If successful, you can list all SNMP metrics by running simple query: `{job="snmp"}`
+
+You can access vEOS box with user/password: `admin/admin`

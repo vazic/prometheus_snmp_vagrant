@@ -1,0 +1,12 @@
+[Unit]
+Description=SNMP Exporter
+After=network.target
+
+[Service]
+Type=simple
+User={{ snmp_exporter_user }}
+ExecStart={{ snmp_exporter_subdir  }}/snmp_exporter --config.file={{ snmp_exporter_config_path }}/snmp.yml
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

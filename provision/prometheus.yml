@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - ansible-prometheus
+    - ansible-snmp-exporter
+  vars:
+    prometheus_components:
+      - prometheus
+      - alertmanager
+    prometheus_conf_main: 'prometheus_config/config.yml'
+

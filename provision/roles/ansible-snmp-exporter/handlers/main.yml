@@ -1,0 +1,9 @@
+---
+- name: restart snmp_exporter
+  service: name=snmp_exporter state=restarted
+
+- name: reload snmp_exporter
+  service: name=snmp_exporter state=reloaded
+
+- name: stop snmp_exporter
+  service: name=snmp_exporter state=stopped
